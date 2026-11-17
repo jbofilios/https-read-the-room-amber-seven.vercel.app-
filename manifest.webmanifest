@@ -1,0 +1,15 @@
+{
+  "name": "Read the room",
+  "short_name": "Read the room",
+  "description": "A pocket meeting guide for moving conversations toward calm, curious thinking.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#EEF2F4",
+  "theme_color": "#16202B",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

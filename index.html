@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Read the room</title>
+<meta name="description" content="A pocket meeting guide for moving conversations toward calm, curious thinking.">
+<meta name="theme-color" content="#EEF2F4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F151B" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Read the room">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --paper:#EEF2F4; --ink:#16202B; --ink-soft:#4E5C69; --line:#D3DCE2;
+  --ember:#C9461F; --ember-tint:#FBE4DB; --ember-ink:#7E2810; --ember-on:#FFFFFF;
+  --amber:#E3A13A; --amber-tint:#FBF0D9; --amber-ink:#6A4606; --amber-on:#2B1D03;
+  --stone:#5F6C78; --stone-tint:#E2E8EC; --stone-ink:#36414B; --stone-on:#FFFFFF;
+  --tide:#22777A; --tide-tint:#D5ECEC; --tide-ink:#0E4A4C; --tide-on:#FFFFFF;
+  --display:"Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --body:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    color-scheme: dark;
+    --paper:#0F151B; --ink:#E7EDF1; --ink-soft:#9AA8B4; --line:#2A3743;
+    --ember:#F0703F; --ember-tint:#3B2017; --ember-ink:#FFC3AC; --ember-on:#0F151B;
+    --amber:#E8B04F; --amber-tint:#3A2D14; --amber-ink:#F8DCA3; --amber-on:#0F151B;
+    --stone:#8E9BA7; --stone-tint:#222C35; --stone-ink:#CBD4DC; --stone-on:#0F151B;
+    --tide:#4FB7B5; --tide-tint:#133338; --tide-ink:#A9E5E3; --tide-on:#0F151B;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--body); font-size:16px; line-height:1.55;
+  padding:max(22px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) max(32px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
+}
+main{max-width:560px; margin:0 auto}
+h1,h2,h3{font-family:var(--display); font-optical-sizing:auto; margin:0}
+h1{font-size:42px; line-height:1; font-weight:700; letter-spacing:-0.025em; margin:6px 0 10px}
+h2{font-size:26px; line-height:1.1; font-weight:650; letter-spacing:-0.01em}
+h3{font-size:15px; font-weight:600; color:var(--ink-soft); margin:26px 0 8px}
+p{margin:0}
+.lede{color:var(--ink-soft); max-width:34ch; margin-bottom:24px}
+
+.tone-defender{--tint:var(--ember-tint); --qink:var(--ember-ink); --fill:var(--ember); --on:var(--ember-on)}
+.tone-explorer{--tint:var(--amber-tint); --qink:var(--amber-ink); --fill:var(--amber); --on:var(--amber-on)}
+.tone-fortress{--tint:var(--stone-tint); --qink:var(--stone-ink); --fill:var(--stone); --on:var(--stone-on)}
+.tone-partner{--tint:var(--tide-tint); --qink:var(--tide-ink); --fill:var(--tide); --on:var(--tide-on)}
+
+.map{display:grid; grid-template-columns:22px minmax(0,1fr); grid-template-rows:auto 1fr auto; gap:8px}
+.cols{grid-column:2; display:flex; justify-content:space-between; font-size:13px; color:var(--ink-soft); line-height:1.3}
+.cols div:last-child{text-align:right}
+.cols strong{display:block; font-family:var(--display); font-size:17px; font-weight:650; color:var(--ink)}
+.rows{grid-column:1; grid-row:2; display:grid; grid-template-rows:1fr 1fr; gap:12px}
+.rows span{writing-mode:vertical-rl; transform:rotate(180deg); font-size:12px; color:var(--ink-soft); text-align:center; align-self:center; justify-self:center}
+.field{grid-column:2; grid-row:2; position:relative; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:12px}
+.q{
+  appearance:none; -webkit-appearance:none; border:0; border-radius:16px; min-height:122px; padding:14px;
+  text-align:left; font:inherit; cursor:pointer; display:flex; flex-direction:column; gap:4px;
+  background:var(--tint); color:var(--qink); -webkit-tap-highlight-color:transparent;
+}
+.q .n{font-family:var(--display); font-size:20px; font-weight:650; line-height:1.1}
+.q .d{font-size:13px; line-height:1.35}
+.q[aria-pressed="true"]{background:var(--fill); color:var(--on)}
+.q:focus-visible,.s:focus-visible,.back:focus-visible,summary:focus-visible{outline:3px solid var(--ink); outline-offset:2px}
+.chip{
+  position:absolute; width:28px; height:28px; border-radius:50%; display:grid; place-items:center;
+  transform:translate(-50%,-50%); pointer-events:none; background:var(--paper);
+  border:1.5px solid var(--tide); color:var(--tide); font-size:15px; font-weight:700; line-height:1;
+}
+.chip.no{border-style:dashed; border-color:var(--ember); color:var(--ember); font-size:13px}
+.c1{left:calc((100% - 12px) / 4); top:50%}
+.c2{left:50%; top:calc((100% - 12px) * 3 / 4 + 12px)}
+.c3{left:calc((100% - 12px) * 3 / 4 + 12px); top:50%}
+.c4{left:50%; top:50%}
+.legend{grid-column:2; font-size:13px; color:var(--ink-soft); line-height:1.45; margin-top:4px}
+
+.detail{margin-top:30px; padding-top:20px; border-top:4px solid var(--fill); scroll-margin-top:16px}
+.dhead{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
+.dhead h2{font-size:34px}
+.badge{font-size:12.5px; padding:5px 11px; border-radius:999px; background:var(--tint); color:var(--qink); white-space:nowrap}
+.where{color:var(--ink-soft); font-size:14px; margin-top:4px}
+.move{font-size:18px; line-height:1.5; margin-top:16px}
+.ask{list-style:none; margin:0; padding:0}
+.ask li{font-family:var(--display); font-size:21px; line-height:1.3; font-weight:450; padding:14px 0; border-bottom:1px solid var(--line)}
+.ask li:first-child{padding-top:4px}
+.signs{margin:0; padding-left:20px}
+.signs li{margin:3px 0}
+.avoid{color:var(--qink); background:var(--tint); padding:12px 14px; border-radius:12px}
+.back{
+  appearance:none; background:none; border:0; padding:0; margin-top:20px; font:inherit; font-size:15px;
+  color:var(--ink); text-decoration:underline; text-underline-offset:3px; cursor:pointer;
+}
+
+.rules,.self{margin-top:44px}
+details{border-bottom:1px solid var(--line)}
+details:first-of-type{border-top:1px solid var(--line); margin-top:14px}
+summary{
+  list-style:none; cursor:pointer; padding:14px 28px 14px 0; position:relative;
+  font-family:var(--display); font-size:19px; font-weight:600;
+}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+"; position:absolute; right:2px; top:50%; transform:translateY(-50%); font-size:22px; font-weight:400; color:var(--ink-soft)}
+details[open] summary::after{content:"\2212"}
+details p{padding:0 0 16px; color:var(--ink); max-width:62ch}
+
+.sub{color:var(--ink-soft); margin:6px 0 14px}
+.seg{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.s{
+  appearance:none; -webkit-appearance:none; border:0; border-radius:12px; padding:12px; font:inherit; font-size:15px;
+  text-align:left; cursor:pointer; background:var(--tint); color:var(--qink); -webkit-tap-highlight-color:transparent;
+}
+.s[aria-pressed="true"]{background:var(--fill); color:var(--on)}
+.selfout{margin-top:14px; font-size:17px; line-height:1.5; min-height:3em}
+
+footer{margin-top:48px; padding-top:16px; border-top:1px solid var(--line); font-size:13px; color:var(--ink-soft)}
+
+@media (prefers-reduced-motion: no-preference){
+  .q,.s{transition:background-color .18s ease, color .18s ease}
+  .q:active,.s:active{transform:scale(0.98)}
+}
+@media (min-width:480px){
+  h1{font-size:52px}
+  .q{min-height:140px; padding:16px}
+  .q .n{font-size:23px}
+}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Read the room</h1>
+    <p class="lede">Tap where they are. Guide them toward calm curiosity without lighting the fuse.</p>
+  </header>
+
+  <section class="map" aria-label="Energy and inquiry map">
+    <div class="cols">
+      <div><strong>Assert</strong>data and opinions</div>
+      <div><strong>Inquire</strong>Socratic questions</div>
+    </div>
+    <div class="rows" aria-hidden="true"><span>High energy</span><span>Low energy</span></div>
+    <div class="field" id="field">
+      <button class="q tone-defender" data-q="defender" aria-pressed="false"><span class="n">Defender</span><span class="d">Heated, pushing conclusions</span></button>
+      <button class="q tone-explorer" data-q="explorer" aria-pressed="false"><span class="n">Explorer</span><span class="d">Excited, curious, scattered</span></button>
+      <button class="q tone-fortress" data-q="fortress" aria-pressed="false"><span class="n">Fortress</span><span class="d">Quiet, closed, settled</span></button>
+      <button class="q tone-partner" data-q="partner" aria-pressed="false"><span class="n">Thinking partner</span><span class="d">Calm, curious, reflective</span></button>
+      <span class="chip c1" aria-hidden="true">&#8595;</span>
+      <span class="chip c2" aria-hidden="true">&#8594;</span>
+      <span class="chip c3" aria-hidden="true">&#8595;</span>
+      <span class="chip c4 no" aria-hidden="true">&#10005;</span>
+    </div>
+    <p class="legend">Lower the energy first, then invite curiosity. Never cut the diagonal.</p>
+  </section>
+
+  <section class="detail tone-defender" id="detail" aria-live="polite">
+    <div class="dhead">
+      <h2 id="d-name">Defender</h2>
+      <span class="badge" id="d-badge">Don’t feed this zone</span>
+    </div>
+    <p class="where" id="d-where">High energy, asserting</p>
+    <p class="move" id="d-move"></p>
+    <h3>Try saying</h3>
+    <ul class="ask" id="d-ask"></ul>
+    <h3>Signs you’re here</h3>
+    <ul class="signs" id="d-signs"></ul>
+    <h3>Avoid</h3>
+    <p class="avoid" id="d-avoid"></p>
+    <button class="back" id="back">Pick another quadrant</button>
+  </section>
+
+  <section class="rules">
+    <h2>Three rules</h2>
+    <details open>
+      <summary>Down before right</summary>
+      <p>Never move someone diagonally. A sharp question to someone who’s heated lands as cross-examination, and they dig in. Lower the temperature first: acknowledge their position, name what’s at stake for them, and slow your own pace. Once they settle into the Fortress, invite them across with curiosity about their reasoning.</p>
+    </details>
+    <details>
+      <summary>Shared inquiry, not cross-examination</summary>
+      <p>Socrates used questions to expose contradictions, and Athens eventually put him on trial for it. If a question has a gotcha answer you’re steering toward, people feel it. Only ask what you’re genuinely curious about, and swap “why did you…” for “what led you to…”.</p>
+    </details>
+    <details>
+      <summary>Map yourself first</summary>
+      <p>Energy is contagious. If you walk in as an Explorer and the other person is asserting, your enthusiasm lifts them straight into Defender. Check your own quadrant before the meeting and lower your pace on purpose.</p>
+    </details>
+  </section>
+
+  <section class="self">
+    <h2>Before you walk in</h2>
+    <p class="sub">Where’s your own energy right now?</p>
+    <div class="seg" role="group" aria-label="Your quadrant">
+      <button class="s tone-defender" data-s="defender" aria-pressed="false">Defender</button>
+      <button class="s tone-explorer" data-s="explorer" aria-pressed="false">Explorer</button>
+      <button class="s tone-fortress" data-s="fortress" aria-pressed="false">Fortress</button>
+      <button class="s tone-partner" data-s="partner" aria-pressed="false">Thinking partner</button>
+    </div>
+    <p class="selfout" id="self-out" aria-live="polite">Pick one. Your energy sets the temperature of the room.</p>
+  </section>
+
+  <footer>Works offline after your first visit. To keep it handy, open your browser’s share menu and choose Add to Home Screen.</footer>
+</main>
+
+<script>
+const Q = {
+  defender: {
+    name: "Defender",
+    where: "High energy, asserting",
+    badge: "Don’t feed this zone",
+    move: "Lower the temperature before anything else. Acknowledge their position fully, slow your own pace, and guide them down, not across.",
+    ask: [
+      "“It sounds like you’ve had to defend this number more than once.”",
+      "“What part of this worries you most?”",
+      "“What would a bad outcome look like from where you sit?”"
+    ],
+    signs: [
+      "Speaks in conclusions: “the fact is…”",
+      "Interrupts, talks fast, leans in",
+      "Uses numbers to win, not to explore",
+      "Lots of “but” and “no”"
+    ],
+    avoid: "Counter-data, “actually…”, “why” questions, and matching their volume."
+  },
+  fortress: {
+    name: "Fortress",
+    where: "Low energy, asserting",
+    badge: "Quiet isn’t agreement",
+    move: "Move them across without raising the energy. Invite them to teach you. Experts open up when they explain their own reasoning.",
+    ask: [
+      "“Walk me through how you landed on that. I want to understand it the way you do.”",
+      "“When you tried this before, what got in the way?”",
+      "“What would you want to be different next time?”"
+    ],
+    signs: [
+      "Short answers: “we’ve looked at that”",
+      "“Just send me something”",
+      "Polite but closed, few questions back",
+      "Glancing at their phone, the clock, or notes"
+    ],
+    avoid: "Pushing harder (it sends them straight up into Defender), pitching, and yes-or-no questions."
+  },
+  explorer: {
+    name: "Explorer",
+    where: "High energy, inquiring",
+    badge: "Excitement isn’t commitment",
+    move: "Keep the curiosity, lower the pace. Narrow from many ideas to the one they care about most.",
+    ask: [
+      "“Of everything we’ve covered, what’s worth slowing down on?”",
+      "“If we only solved one of these, which would matter most?”",
+      "“What would have to be true for that to work here?”"
+    ],
+    signs: [
+      "“What if…” and rapid-fire ideas",
+      "Jumps topics, builds on everything",
+      "Says yes to a lot",
+      "Fast, animated, energizing"
+    ],
+    avoid: "Riding the wave with them, adding more ideas, and reading enthusiasm as a buying signal."
+  },
+  partner: {
+    name: "Thinking partner",
+    where: "Low energy, inquiring",
+    badge: "Target zone",
+    move: "Protect it. Ask less, listen more, and let them reach the conclusion. The idea they say out loud is the one they’ll own. After you ask, let the silence work.",
+    ask: [
+      "“What are you noticing?”",
+      "“What does that mean for how you’d approach it?”",
+      "“What would you want to do with that?”"
+    ],
+    signs: [
+      "Pauses before answering: “hmm…”",
+      "“I hadn’t thought about it that way”",
+      "Thinks out loud, asks you questions back",
+      "Slower and quieter, but engaged"
+    ],
+    avoid: "Jumping in to pitch, filling the silence, and summarizing their insight for them."
+  }
+};
+
+const SELF = {
+  defender: "You’re walking in with a position to win. Write down one question you genuinely don’t know the answer to, and lead with it.",
+  explorer: "Great for ideas, risky for the room. Halve your pace, bring one idea instead of five, and let silences run a full three seconds.",
+  fortress: "You’ve already decided how this goes. Name one thing you could be wrong about before you sit down.",
+  partner: "You’re ready. Open with a question you want answered, then listen more than you talk."
+};
+
+const KEYS = ["defender", "explorer", "fortress", "partner"];
+const detail = document.getElementById("detail");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function fillList(id, items) {
+  const el = document.getElementById(id);
+  el.replaceChildren(...items.map(t => { const li = document.createElement("li"); li.textContent = t; return li; }));
+}
+
+function pick(key, scroll) {
+  const d = Q[key];
+  document.querySelectorAll(".q").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.q === key)));
+  KEYS.forEach(k => detail.classList.toggle("tone-" + k, k === key));
+  document.getElementById("d-name").textContent = d.name;
+  document.getElementById("d-badge").textContent = d.badge;
+  document.getElementById("d-where").textContent = d.where;
+  document.getElementById("d-move").textContent = d.move;
+  document.getElementById("d-avoid").textContent = d.avoid;
+  fillList("d-ask", d.ask);
+  fillList("d-signs", d.signs);
+  if (scroll && detail.getBoundingClientRect().top > window.innerHeight * 0.6) {
+    detail.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+  }
+}
+
+document.querySelectorAll(".q").forEach(b => b.addEventListener("click", () => pick(b.dataset.q, true)));
+
+document.getElementById("back").addEventListener("click", () => {
+  document.getElementById("field").scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+});
+
+document.querySelectorAll(".s").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll(".s").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+  document.getElementById("self-out").textContent = SELF[b.dataset.s];
+}));
+
+pick("defender", false);
+
+if ("serviceWorker" in navigator && location.protocol === "https:") {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
+</script>
+</body>
+</html>
